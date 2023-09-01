@@ -4,6 +4,7 @@ vcpkg_from_github(
   HEAD_REF master
   REF v${VERSION}
   SHA512 5d19e3ba50db25c203d87b1f47e9151a21f2afced35a7306d33c4fd2fc44f4d56826a1920023bd6de5cebbed2301e39e152f4c17e63905e34f56b39e34b235d1
+  PATCHES shaderlib.patch
 )
 
 vcpkg_from_github(
