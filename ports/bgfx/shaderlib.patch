@@ -80,9 +80,11 @@ new file mode 100644
 index 0000000..497ae35
 --- /dev/null
 +++ b/shaderlib.cpp
-@@ -0,0 +1,26 @@
+@@ -0,0 +1,28 @@
 +typedef unsigned int uint32_t;
 +
++#define SHEXPORT 
++//#define SHEXPORT __declspec(dllexport) 
 +namespace bx
 +{
 +	struct WriterI;
@@ -96,12 +98,12 @@ index 0000000..497ae35
 +
 +extern "C"
 +{
-+	int __declspec(dllexport) compileShaderCmd(int _argc, const char* _argv[])
++	int SHEXPORT compileShaderCmd(int _argc, const char* _argv[])
 +	{
 +		return bgfx::compileShader(_argc, _argv);
 +	}
 +
-+	bool __declspec(dllexport) 
++	bool SHEXPORT
 +		compileShader(const char* _varying, const char* _comment, char* _shader, uint32_t _shaderLen, bgfx::Options& _options, bx::WriterI* _writer, bx::WriterI* _messageWriter)
 +	{
 +		return bgfx::compileShader(_varying, _comment, _shader, _shaderLen, _options, _writer, _messageWriter);
