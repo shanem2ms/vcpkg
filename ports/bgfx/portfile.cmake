@@ -1,10 +1,9 @@
 vcpkg_from_github(
   OUT_SOURCE_PATH SOURCE_PATH
-  REPO "bkaradzic/bgfx.cmake"
+  REPO "shanem2ms/bgfx.cmake"
   HEAD_REF master
-  REF v${VERSION}
-  SHA512 5d19e3ba50db25c203d87b1f47e9151a21f2afced35a7306d33c4fd2fc44f4d56826a1920023bd6de5cebbed2301e39e152f4c17e63905e34f56b39e34b235d1
-  PATCHES shaderlib.patch
+  REF vcpkg.1
+  SHA512 964ec27d97b8963bc241ed88b11fff03559c900abcc5780450c5f5f4e662a8b6381dbe516fd2fc48b254d006b58bdad24080f9f57e5e181c6dfbf623ca4adc83
 )
 
 vcpkg_from_github(
