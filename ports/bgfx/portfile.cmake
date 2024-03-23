@@ -1,9 +1,8 @@
-vcpkg_from_github(
-  OUT_SOURCE_PATH SOURCE_PATH
-  REPO "shanem2ms/bgfx.cmake"
-  HEAD_REF master
-  REF vcpkg.1
-  SHA512 964ec27d97b8963bc241ed88b11fff03559c900abcc5780450c5f5f4e662a8b6381dbe516fd2fc48b254d006b58bdad24080f9f57e5e181c6dfbf623ca4adc83
+vcpkg_download_distfile(
+    ARCHIVE_FILE
+    URLS https://github.com/bkaradzic/bgfx.cmake/releases/download/v${VERSION}/bgfx.cmake.v${VERSION}.tar.gz
+    FILENAME bgfx.cmake.v${VERSION}.tar.gz
+    SHA512 369943ce0f8f2b5332d7334247d3a9ef0e28a6b1ff5ee250a01f83d1a0bd865687397da791e4c861d1c1b18ec4285f50153139f3c0e398611c7f3b672d1c751c
 )
 
 vcpkg_extract_source_archive(
