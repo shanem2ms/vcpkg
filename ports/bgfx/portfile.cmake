@@ -15,6 +15,13 @@ vcpkg_check_features(
   FEATURES tools BGFX_BUILD_TOOLS multithreaded BGFX_CONFIG_MULTITHREADED
 )
 
+# We must not correct the CMake include path before build
+vcpkg_apply_patches(
+    SOURCE_PATH "${SOURCE_PATH}"
+    PATCHES 
+        shaderdyn.patch
+)
+
 if (TARGET_TRIPLET MATCHES "(windows|uwp)")
   # bgfx doesn't apply __declspec(dllexport) which prevents dynamic linking
   set(BGFX_LIBRARY_TYPE "STATIC")
