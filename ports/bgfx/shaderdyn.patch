@@ -1,3 +1,5 @@
+diff --git a/cmake/bgfx/shaderc.cmake b/cmake/bgfx/shaderc.cmake
+index 0f50eab..c837055 100644
 --- a/cmake/bgfx/shaderc.cmake
 +++ b/cmake/bgfx/shaderc.cmake
 @@ -17,10 +17,10 @@ file(
@@ -22,7 +24,7 @@
  	PRIVATE bx
  			bimg
  			bgfx-vertexlayout
-@@ -41,13 +41,31 @@ target_link_libraries(
+@@ -41,13 +41,27 @@ target_link_libraries(
  			spirv-cross
  			webgpu
  )
@@ -39,30 +41,26 @@
 +					   OUTPUT_NAME ${BGFX_TOOLS_PREFIX}shaderclib #
 +)
 +
-+add_custom_target(shaderclibcmb ALL
-+   BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/shaderclibcmb.lib
-+   COMMAND ${CMAKE_AR} /OUT:${CMAKE_CURRENT_BINARY_DIR}/shaderclibcmb.lib $<TARGET_FILE:shaderclib> $<TARGET_FILE:glslang> $<TARGET_FILE:glsl-optimizer> $<TARGET_FILE:spirv-opt> $<TARGET_FILE:spirv-cross> $<TARGET_FILE:fcpp>)
-+
 +add_executable(
 +	shaderc
 +)
 +
 +target_link_libraries(
-+	shaderc 
++	shaderc
 +	PRIVATE 
-+			${CMAKE_CURRENT_BINARY_DIR}/shaderclibcmb.lib
++			shaderclib 
 +			bimg 
 +			bgfx-vertexlayout 
 +			bgfx-shader
  )
  
  if(BGFX_BUILD_TOOLS_SHADER)
-@@ -63,6 +81,17 @@ elseif(IOS)
+@@ -63,6 +77,17 @@ elseif(IOS)
  	set_target_properties(shaderc PROPERTIES MACOSX_BUNDLE ON MACOSX_BUNDLE_GUI_IDENTIFIER shaderc)
  endif()
  
 +add_library( shadercdyn 
-+	STATIC 
++	SHARED 
 +	${CMAKE_SOURCE_DIR}/shaderlib.cpp )
 +set_target_properties( shadercdyn 
 +	PROPERTIES FOLDER "bgfx/tools" )
@@ -73,11 +71,11 @@
 +
  if(BGFX_INSTALL)
  	install(TARGETS shaderc EXPORT "${TARGETS_EXPORT_NAME}" DESTINATION "${CMAKE_INSTALL_BINDIR}")
-+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/shaderclibcmb.lib DESTINATION "${CMAKE_INSTALL_LIBDIR}")
++	install(TARGETS shadercdyn EXPORT "${TARGETS_EXPORT_NAME}")
  endif()
 diff --git a/shaderlib.cpp b/shaderlib.cpp
 new file mode 100644
-index 0000000..48106c4
+index 0000000..497ae35
 --- /dev/null
 +++ b/shaderlib.cpp
 @@ -0,0 +1,26 @@
@@ -90,19 +88,19 @@ index 0000000..48106c4
 +namespace bgfx
 +{
 +struct Options;
-+bool compileShader(const char* _varying, const char* _comment, char* _shader, uint32_t _shaderLen, Options& _options, bx::WriterI* _shaderWriter, bx::WriterI* _messageWriter);
++bool compileShader(const char* _varying, const char* _comment, char* _shader, uint32_t _shaderLen, const Options& _options, bx::WriterI* _shaderWriter, bx::WriterI* _messageWriter);
 +int compileShader(int _argc, const char* _argv[]);
 +}
 +
 +extern "C"
 +{
-+	int compileShaderCmd(int _argc, const char* _argv[])
++	int __declspec(dllexport) compileShaderCmd(int _argc, const char* _argv[])
 +	{
 +		return bgfx::compileShader(_argc, _argv);
 +	}
 +
-+	bool
-+		compileShader(const char* _varying, const char* _comment, char* _shader, uint32_t _shaderLen, bgfx::Options& _options, bx::WriterI* _writer, bx::WriterI* _messageWriter)
++	bool __declspec(dllexport) 
++		compileShader(const char* _varying, const char* _comment, char* _shader, uint32_t _shaderLen, const bgfx::Options& _options, bx::WriterI* _writer, bx::WriterI* _messageWriter)
 +	{
 +		return bgfx::compileShader(_varying, _comment, _shader, _shaderLen, _options, _writer, _messageWriter);
 +	}
