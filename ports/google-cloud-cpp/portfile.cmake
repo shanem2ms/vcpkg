@@ -4,10 +4,8 @@ vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO googleapis/google-cloud-cpp
     REF "v${VERSION}"
-    SHA512 52cab0e1ee1ebd51097d28b2cd9a390110ce3f45e92d262fb301cfebdea369ea8b9290c44c26d6b6ba568b0dab1e4871ea819f8a440efeefb38c99f2776aac27
+    SHA512 a29606ccd17b17388c8383d555b29ad8ca851e9ceb8337dd26e2945e81c3791f723e68053035c891533b7be5d79d44e3efe3beeff30a4adee6aa13e411638440
     HEAD_REF main
-    PATCHES
-        support_absl_cxx17.patch
 )
 
 if ("grpc-common" IN_LIST FEATURES)
@@ -33,9 +31,9 @@ if ("dialogflow-es" IN_LIST FEATURES)
     list(REMOVE_ITEM GOOGLE_CLOUD_CPP_ENABLE "dialogflow-es")
     list(APPEND GOOGLE_CLOUD_CPP_ENABLE "dialogflow_es")
 endif ()
-if ("experimental-storage-grpc" IN_LIST FEATURES)
-    list(REMOVE_ITEM GOOGLE_CLOUD_CPP_ENABLE "experimental-storage-grpc")
-    list(APPEND GOOGLE_CLOUD_CPP_ENABLE "experimental-storage_grpc")
+if ("storage-grpc" IN_LIST FEATURES)
+    list(REMOVE_ITEM GOOGLE_CLOUD_CPP_ENABLE "storage-grpc")
+    list(APPEND GOOGLE_CLOUD_CPP_ENABLE "storage_grpc")
 endif ()
 
 vcpkg_cmake_configure(
@@ -48,6 +46,7 @@ vcpkg_cmake_configure(
         -DGOOGLE_CLOUD_CPP_ENABLE_CCACHE=OFF
         -DGOOGLE_CLOUD_CPP_ENABLE_EXAMPLES=OFF
         -DBUILD_TESTING=OFF
+        -DGOOGLE_CLOUD_CPP_WITH_MOCKS=OFF
 )
 
 vcpkg_cmake_install()

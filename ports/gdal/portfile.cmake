@@ -2,13 +2,14 @@ vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO OSGeo/gdal
     REF "v${VERSION}"
-    SHA512 5b155229225e904b3619628ec27efdd273d9f083c1ee4f6d94041897d5bc9c3133590b70885ad61fc8864da2f334a75cf32bafe7f776c40bbbc3673fe842c986
+    SHA512 4e0431c9bb9b7c54508afdcaa936445eee8878aa47f404e2ff00c8ce786c1dd58247c2cee76cb0e0e26cef04419d7c6c4884f2d9078e9d292c4a1c720deae3ed
     HEAD_REF master
     PATCHES
         find-link-libraries.patch
         fix-gdal-target-interfaces.patch
         libkml.patch
         target-is-valid.patch
+        remove-machine-flag.patch
 )
 # `vcpkg clean` stumbles over one subdir
 file(REMOVE_RECURSE "${SOURCE_PATH}/autotest")
@@ -22,6 +23,7 @@ vcpkg_replace_string("${SOURCE_PATH}/ogr/ogrsf_frmts/flatgeobuf/flatbuffers/base
 # "core" is used for a dependency which must be enabled to avoid vendored lib.
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
     FEATURES
+        archive          GDAL_USE_ARCHIVE
         cfitsio          GDAL_USE_CFITSIO
         curl             GDAL_USE_CURL
         expat            GDAL_USE_EXPAT
